@@ -149,6 +149,8 @@ public class SignInActivity extends AppCompatActivity implements
 
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+
+            startActivity(new Intent(this, MainActivity.class));
         } else {
             mStatusTextView.setText(R.string.signed_out);
 
