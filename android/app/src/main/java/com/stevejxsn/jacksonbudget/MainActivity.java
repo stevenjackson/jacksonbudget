@@ -14,6 +14,10 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,11 +45,28 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
-        List<BudgetCategory> data = new ArrayList();
-        data.add(new BudgetCategory("foo", "123"));
-        data.add(new BudgetCategory("bar", "456"));
-        populateListView(data);
+        List<BudgetCategory> data = null;
+        try {
+            data = parseBudget(getIntent().getStringExtra("SERVER_DATA"));
+            populateListView(data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
+
+    private List<BudgetCategory> parseBudget(String json) throws JSONException {
+        final JSONObject jsonObject = new JSONObject(json);
+        JSONArray balances = jsonObject.getJSONArray("balances");
+        List<BudgetCategory> categories = new ArrayList<BudgetCategory>();
+        for (int i = 0; i < balances.length(); i++) {
+          categories.add(new BudgetCategory(
+              balances.getJSONObject(i).getString("category"),
+              balances.getJSONObject(i).getString("balance")
+          ));
+        }
+        return categories;
+    }
+
 
     private void populateListView(List<BudgetCategory> data) {
         BudgetCategoryAdapter adapter = new BudgetCategoryAdapter(this, R.layout.budget_row, data);

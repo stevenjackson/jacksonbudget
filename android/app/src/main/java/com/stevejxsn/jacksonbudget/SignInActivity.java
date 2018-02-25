@@ -9,6 +9,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -17,6 +24,9 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Activity to demonstrate basic retrieval of the Google user's ID, email address, and basic
@@ -48,6 +58,7 @@ public class SignInActivity extends AppCompatActivity implements
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
         // [END configure_signin]
@@ -73,7 +84,7 @@ public class SignInActivity extends AppCompatActivity implements
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        updateUI(account);
+        updateAccount(account);
         // [END on_start_sign_in]
     }
 
@@ -98,12 +109,12 @@ public class SignInActivity extends AppCompatActivity implements
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
             // Signed in successfully, show authenticated UI.
-            updateUI(account);
+            updateAccount(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-            updateUI(null);
+            updateAccount(null);
         }
     }
     // [END handleSignInResult]
@@ -122,7 +133,7 @@ public class SignInActivity extends AppCompatActivity implements
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         // [START_EXCLUDE]
-                        updateUI(null);
+                        updateAccount(null);
                         // [END_EXCLUDE]
                     }
                 });
@@ -136,12 +147,50 @@ public class SignInActivity extends AppCompatActivity implements
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         // [START_EXCLUDE]
-                        updateUI(null);
+                        updateAccount(null);
                         // [END_EXCLUDE]
                     }
                 });
     }
     // [END revokeAccess]
+
+    private void updateAccount(@Nullable GoogleSignInAccount account) {
+        if(account != null) {
+            String idToken = account.getIdToken();
+            String serverUrl = getString(R.string.fetch_url);
+            fetchData(serverUrl, idToken);
+        }
+        updateUI(account);
+    }
+
+    private void fetchData(final String url, final String idToken) {
+        JsonFetcher fetcher = new JsonFetcher(this, idToken);
+        fetcher.fetch(
+            url,
+            new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        Log.i(TAG, "got response" + response.toString(2));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                    intent.putExtra("SERVER_DATA", response.toString());
+                    startActivity(intent);
+                }
+            },
+            new ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.w(TAG, "fetch from " + url +" failed" + error.getMessage());
+                    // TODO Auto-generated method stub
+
+                }
+            }
+        );
+    }
 
     private void updateUI(@Nullable GoogleSignInAccount account) {
         if (account != null) {
@@ -149,8 +198,6 @@ public class SignInActivity extends AppCompatActivity implements
 
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
-
-            startActivity(new Intent(this, MainActivity.class));
         } else {
             mStatusTextView.setText(R.string.signed_out);
 
