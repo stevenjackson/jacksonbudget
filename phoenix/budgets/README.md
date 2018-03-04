@@ -17,3 +17,9 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
   * Docs: https://hexdocs.pm/phoenix
   * Mailing list: http://groups.google.com/group/phoenix-talk
   * Source: https://github.com/phoenixframework/phoenix
+
+
+NOTES:
+```
+docker run -e PSQL_HOST=docker.for.mac.host.internal --name budgets -p 4000:80 da4466246423 foreground
+```
