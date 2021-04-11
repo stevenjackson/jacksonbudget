@@ -29,4 +29,5 @@ RUN apk add --no-cache bash openssl
 
 COPY --from=builder /app/target /app
 
-ENTRYPOINT ["app/bin/budgets"]
+CMD trap 'exit' INT; app/bin/budgets foreground
+# ENTRYPOINT ["app/bin/budgets"]

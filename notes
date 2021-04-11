@@ -32,7 +32,8 @@ I need to break this down so I can A) get something end-to-end and B) work on it
 
 [x] Does android app work in an emulator?  What does it do?
 It does the sign in and is trying to call the "server" to get json.  That needs to work to see anything else.
-* Can I use the phoenix app as-is right now?  Does it return json outside it's container?
+[x] * Can I use the phoenix app as-is right now?  Does it return json outside it's container?
+After a few fixes, mostly.
 * Deploy that app using Google Cloud Run.  See dummy data at a publically acccessible endpoint.
 * Lock down the endpoint (static)  or make it settable in the android app.
 * Serve dummy data from container in android app.
