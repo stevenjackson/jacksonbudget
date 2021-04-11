@@ -32,9 +32,32 @@ I need to break this down so I can A) get something end-to-end and B) work on it
 
 [x] Does android app work in an emulator?  What does it do?
 It does the sign in and is trying to call the "server" to get json.  That needs to work to see anything else.
-[x] * Can I use the phoenix app as-is right now?  Does it return json outside it's container?
+
+[x] Can I use the phoenix app as-is right now?  Does it return json outside it's container?
 After a few fixes, mostly.
-* Deploy that app using Google Cloud Run.  See dummy data at a publically acccessible endpoint.
+
+[x] Deploy that app using Google Cloud Run.  See dummy data at a publically acccessible endpoint.
+This has been a thing.
+
+Started off trying to configure Cloud Run.
+
+There's a built-in way to do this from repo pushes, but building the container requires all your secrets to be accesssible.  Since I didn't want to commit those , I opted for pushing the images myself, though configuring the secrets somewhere in google is probably an option.
+To push images need to install gcloud apis:
+```
+brew install -cask google-cloud-install
+gcloud auth login
+gcloud config set project jackson-budget-1519498484201
+gcloud services enable containerregistry.googleapis.com
+gcloud auth configure-docker
+```
+Plus some changes around giving the service account the IAM roles it needs.  Not sure what was necessary there, but it's a mess.
+
+Added a publish task to `docker tag` and `docker push` the image.
+
+Now back to cloud run, can I use the latest image?
+Yes!
+----
+
 * Lock down the endpoint (static)  or make it settable in the android app.
 * Serve dummy data from container in android app.
 * Investigate regenerate the phoenix app rather than working with 3 year old tech?

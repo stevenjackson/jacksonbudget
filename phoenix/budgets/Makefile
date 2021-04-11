@@ -4,6 +4,7 @@
 APP_NAME ?= `grep 'app:' mix.exs | sed -e 's/\[//g' -e 's/ //g' -e 's/app://' -e 's/[:,]//g'`
 APP_VSN ?= `grep 'version:' mix.exs | cut -d '"' -f2`
 BUILD ?= `git rev-parse --short HEAD`
+PROJECT-ID ?= "jackson-budget-1519498484201"
 
 help:
 	@echo "$(APP_NAME):$(APP_VSN)-$(BUILD)"
@@ -21,3 +22,7 @@ run: ## Run the app in Docker
 	--env PORT=8080 \
 	-p 8080:8080 \
 	--rm -it $(APP_NAME):latest
+
+publish: ## Send the docker image to gcloud
+	docker tag ${APP_NAME}:latest gcr.io/${PROJECT-ID}/${APP_NAME}
+	docker push gcr.io/${PROJECT-ID}/${APP_NAME}
