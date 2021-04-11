@@ -29,5 +29,8 @@ RUN apk add --no-cache bash openssl
 
 COPY --from=builder /app/target /app
 
+# Temp (I think)
+COPY balances.txt /app
+
 CMD trap 'exit' INT; app/bin/budgets foreground
 # ENTRYPOINT ["app/bin/budgets"]
