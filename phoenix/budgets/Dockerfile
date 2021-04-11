@@ -21,9 +21,9 @@ RUN find /app/_build/prod/rel/budgets/releases/ -name budgets.tar.gz -exec tar x
 
 # release container
 FROM alpine:3.6
+ENV MIX_ENV=prod REPLACE_OS_VARS=true SHELL=/bin/sh
 
-EXPOSE 80
-ENV PORT=80 MIX_ENV=prod REPLACE_OS_VARS=true SHELL=/bin/sh
+#NOTE PORT should be injected
 
 RUN apk add --no-cache bash openssl
 
@@ -33,4 +33,3 @@ COPY --from=builder /app/target /app
 COPY balances.txt /app
 
 CMD trap 'exit' INT; app/bin/budgets foreground
-# ENTRYPOINT ["app/bin/budgets"]

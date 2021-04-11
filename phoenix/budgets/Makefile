@@ -18,5 +18,6 @@ build: ## Build the Docker image
 
 run: ## Run the app in Docker
 	docker run \
-	--expose 80 -p 4000:80 \
+	--env PORT=8080 \
+	-p 8080:8080 \
 	--rm -it $(APP_NAME):latest
