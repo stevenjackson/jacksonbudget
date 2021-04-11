@@ -58,8 +58,12 @@ Now back to cloud run, can I use the latest image?
 Yes!
 ----
 
-* Lock down the endpoint (static)  or make it settable in the android app.
+[x] Lock down the endpoint (static)  or make it settable in the android app.
+This seems to work?  Cloud run gave me an endpoint and I injected it into secrets for the android app.  As far as I can tell from the docs, this is a permanent assignment.
+
 * Serve dummy data from container in android app.
+[x] - Done
+
 * Investigate regenerate the phoenix app rather than working with 3 year old tech?
 * Investigate uploading some kind of file to Google Cloud Storage and restricting access.
 * Accessing Google Cloud Storage from elixir
