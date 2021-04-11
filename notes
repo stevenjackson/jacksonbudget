@@ -1,0 +1,53 @@
+# Apr 10 2021
+
+Coming back to this project has been a lot of - what was I trying to do?  Where are we?  What is this thing?
+
+There's an android app.  It lets you sign in with google and pass a token on your web requests.  I think that's it honestly.  Oh it has a list view.
+
+I have a phoenix app for serving json.  As I recall this was an excuse to use phoenix and I got hung up on how/where to deploy the darn container.
+
+It looks like I started a loader that will throw text files up for the phoenix app (wherever it lives) to work with
+
+Coming back to this I'm struck by how much I just don't understand the elixir ecosystem.  I'm still unsure that it's a good direction for this, but there's so little "actual code" that I don't think it matters.  This whole thing could run in a lambda if it weren't for my vanity.
+
+
+## Here's what I've identfied today:
+
+* I want secure access to the data files
+* I kinda/sorta want to keep elixir, but getting more ambivalent.  My interest is waning as I want to do elixir but I want to do massively parallel elixir not lame "serve json" elixir.
+* I sorta/kinda want to keep docker to play with those deployment services.
+* I'd prefer AWS
+* I already need/have a google project to do the auth stuff in android.
+
+## So with all that, here's where I'm leaning.
+
+* Google Cloud Storage for files.  Presumably this can be accessed s3 style using ids and secrets.
+* Docker container runnning phoenix for now, deployed using Google Cloud Run.  It's supposed to be free and can't be that different from ECS.  Getting comfortable just deploying containers means I can try different things here.
+* I'd like to investigate terraform as an option so I can potentially try migrating something from google to aws and getting some experience with that.  But that might make me sad that still nothing is getting shipped.
+* My upload app might just turn into a POST with magic credentials for now.  I have to bend somewhere and I'm the one uploading the data.
+
+## Next steps
+
+I need to break this down so I can A) get something end-to-end and B) work on it 20 mins at a time.
+
+[x] Does android app work in an emulator?  What does it do?
+It does the sign in and is trying to call the "server" to get json.  That needs to work to see anything else.
+* Can I use the phoenix app as-is right now?  Does it return json outside it's container?
+* Deploy that app using Google Cloud Run.  See dummy data at a publically acccessible endpoint.
+* Lock down the endpoint (static)  or make it settable in the android app.
+* Serve dummy data from container in android app.
+* Investigate regenerate the phoenix app rather than working with 3 year old tech?
+* Investigate uploading some kind of file to Google Cloud Storage and restricting access.
+* Accessing Google Cloud Storage from elixir
+* Serve processed data from GCS in android app
+* Reject requests that aren't from laura or me.
+* Load android app on laura's phone see dumb data.
+* Put "real" data in google cloud storage - see on phone.
+=== v1 ready ====
+* Add upload endpoint locked to me - somehow.
+* Verify updates update the app.
+=== v2 ready ====
+
+
+
+
