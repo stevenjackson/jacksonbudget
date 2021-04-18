@@ -1,5 +1,5 @@
-defmodule Budgets.BalanceView do
-  use Budgets.Web, :view
+defmodule BudgetsWeb.BalanceView do
+  use BudgetsWeb, :view
 
    def render("balance.json", %{balance: balance}) do
      %{

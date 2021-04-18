@@ -20,9 +20,11 @@ defmodule BudgetsWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-#  scope "/api", BudgetsWeb do
-#    pipe_through :api
-#  end
+   scope "/api", BudgetsWeb do
+     pipe_through :api
+
+     get "/dashboard", BalancesController, :index
+   end
 
   # Enables LiveDashboard only for development
   #

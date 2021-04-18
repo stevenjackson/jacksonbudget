@@ -1,5 +1,5 @@
-defmodule Budgets.DashboardController do
-  use Budgets.Web, :controller
+defmodule BudgetsWeb.BalancesController do
+  use BudgetsWeb, :controller
 
   def index(conn, _params) do
     balances = Budgets.TextFileLoader.load_balances
