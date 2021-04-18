@@ -30,13 +30,13 @@ Coming back to this I'm struck by how much I just don't understand the elixir ec
 
 I need to break this down so I can A) get something end-to-end and B) work on it 20 mins at a time.
 
-[x] Does android app work in an emulator?  What does it do?
+### Does android app work in an emulator?  What does it do?
 It does the sign in and is trying to call the "server" to get json.  That needs to work to see anything else.
 
-[x] Can I use the phoenix app as-is right now?  Does it return json outside it's container?
+### Can I use the phoenix app as-is right now?  Does it return json outside it's container?
 After a few fixes, mostly.
 
-[x] Deploy that app using Google Cloud Run.  See dummy data at a publically acccessible endpoint.
+### Deploy that app using Google Cloud Run.  See dummy data at a publically acccessible endpoint.
 This has been a thing.
 
 Started off trying to configure Cloud Run.
@@ -58,29 +58,33 @@ Now back to cloud run, can I use the latest image?
 Yes!
 ----
 
-[x] Lock down the endpoint (static)  or make it settable in the android app.
+### Lock down the endpoint (static)  or make it settable in the android app.
 This seems to work?  Cloud run gave me an endpoint and I injected it into secrets for the android app.  As far as I can tell from the docs, this is a permanent assignment.
 
-* Serve dummy data from container in android app.
+### Serve dummy data from container in android app.
 [x] - Done
 
-* Investigate regenerate the phoenix app rather than working with 3 year old tech?
+### Investigate regenerate the phoenix app rather than working with 3 year old tech?
 [x] - Done.  This was a little more than I hoped, but I'm super excited that the elixir/phx ecosystem has moved on.  With `mix release` I no longer need distillery and phoenix now has top-level docs on how to get integrated with docker and configure to pass in runtime secrets.
 https://hexdocs.pm/phoenix/releases.html#containers Good stuff!  Live Dashboard looks cool too, though I doubt I will use it
-* Re-enable auto deploys (gh webhooks) now that we don't need secrets at build time
-* Investigate uploading some kind of file to Google Cloud Storage and restricting access.
-* Accessing Google Cloud Storage from elixir
-* Serve processed data from GCS in android app
-* Reject requests that aren't from laura or me.
-* get SECRET_KEY_BASE into the container
+
+### get SECRET_KEY_BASE into the container
 [x] - Done this was really easy.  Since I don't have "auto" deploys wired up yet I had to go to cloud run anyway to change my image.  There's a tab for variables.
-* Load android app on laura's phone see dumb data.
-* Put "real" data in google cloud storage - see on phone.
+
+### Re-enable auto deploys (gh webhooks) now that we don't need secrets at build time
+Done.  This generated something called a cloudbuild.yaml file that was not quite right for my strange package structure.  I decided to copy/paste/hack that into version control rather than trying to ever find it again.
+
+### Investigate uploading some kind of file to Google Cloud Storage and restricting access.
+### Accessing Google Cloud Storage from elixir
+### Serve processed data from GCS in android app
+### Reject requests that aren't from laura or me.
+### Load android app on laura's phone see dumb data.
+### Put "real" data in google cloud storage - see on phone.
 === v1 ready ====
-* Add upload endpoint locked to me - somehow.
-* Verify updates update the app.
+
+
+### Add upload endpoint locked to me - somehow.
+### Verify updates update the app.
 === v2 ready ====
-
-
 
 
