@@ -65,10 +65,15 @@ This seems to work?  Cloud run gave me an endpoint and I injected it into secret
 [x] - Done
 
 * Investigate regenerate the phoenix app rather than working with 3 year old tech?
+[x] - Done.  This was a little more than I hoped, but I'm super excited that the elixir/phx ecosystem has moved on.  With `mix release` I no longer need distillery and phoenix now has top-level docs on how to get integrated with docker and configure to pass in runtime secrets.
+https://hexdocs.pm/phoenix/releases.html#containers Good stuff!  Live Dashboard looks cool too, though I doubt I will use it
+* Re-enable auto deploys (gh webhooks) now that we don't need secrets at build time
 * Investigate uploading some kind of file to Google Cloud Storage and restricting access.
 * Accessing Google Cloud Storage from elixir
 * Serve processed data from GCS in android app
 * Reject requests that aren't from laura or me.
+* get SECRET_KEY_BASE into the container
+[x] - Done this was really easy.  Since I don't have "auto" deploys wired up yet I had to go to cloud run anyway to change my image.  There's a tab for variables.
 * Load android app on laura's phone see dumb data.
 * Put "real" data in google cloud storage - see on phone.
 === v1 ready ====
