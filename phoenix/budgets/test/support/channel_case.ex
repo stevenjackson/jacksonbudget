@@ -1,16 +1,18 @@
-defmodule Budgets.ChannelCase do
+defmodule BudgetsWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
 
   Such tests rely on `Phoenix.ChannelTest` and also
   import other functionality to make it easier
-  to build and query models.
+  to build common data structures and query the data layer.
 
   Finally, if the test case interacts with the database,
-  it cannot be async. For this reason, every test runs
-  inside a transaction which is reset at the beginning
-  of the test unless the test case is marked as async.
+  we enable the SQL sandbox, so changes done to the database
+  are reverted at the end of every test. If you are using
+  PostgreSQL, you can even run database tests asynchronously
+  by setting `use BudgetsWeb.ChannelCase, async: true`, although
+  this option is not recommended for other databases.
   """
 
   use ExUnit.CaseTemplate
@@ -18,26 +20,15 @@ defmodule Budgets.ChannelCase do
   using do
     quote do
       # Import conveniences for testing with channels
-      use Phoenix.ChannelTest
-
-      alias Budgets.Repo
-      import Ecto
-      import Ecto.Changeset
-      import Ecto.Query
-
+      import Phoenix.ChannelTest
+      import BudgetsWeb.ChannelCase
 
       # The default endpoint for testing
-      @endpoint Budgets.Endpoint
+      @endpoint BudgetsWeb.Endpoint
     end
   end
 
-  setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Budgets.Repo)
-
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Budgets.Repo, {:shared, self()})
-    end
-
+  setup _tags do
     :ok
   end
 end
