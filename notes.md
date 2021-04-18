@@ -75,7 +75,23 @@ https://hexdocs.pm/phoenix/releases.html#containers Good stuff!  Live Dashboard 
 Done.  This generated something called a cloudbuild.yaml file that was not quite right for my strange package structure.  I decided to copy/paste/hack that into version control rather than trying to ever find it again.
 
 ### Investigate uploading some kind of file to Google Cloud Storage and restricting access.
+This seems to be pretty easy - buckets are non-public and access prompts for google login.  I feel like I'm missing something, it's too easy.
+
 ### Accessing Google Cloud Storage from elixir
+Found this. https://github.com/googleapis/elixir-google-api
+Had some issues trying to figure out how to get started.  It seems like there's a `goth` library that handles the auth part of the connection.  And it supposedly has a flow that uses "Application Default Credentials" https://cloud.google.com/docs/authentication/production but all the examples make it seem like this is ignored and explicit configuration is the way.
+
+Ran:
+`gcloud auth application-default login`
+
+This seems to have generated a json file.  I'm going to see if I can inject this in my dev configs.
+
+This is the wrong thing as it creates a refresh token based file and I probably want a service account.
+
+I'll try and do this like the goth README seems to want and then bail back to 1.2 if that doesn't work.
+
+Ok, seem to have goth working locally.
+
 ### Serve processed data from GCS in android app
 ### Reject requests that aren't from laura or me.
 ### Load android app on laura's phone see dumb data.
