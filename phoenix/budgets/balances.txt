@@ -1,3 +1,0 @@
-Groc	123
-Dinner/fun	456
-gas	777

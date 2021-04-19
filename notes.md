@@ -92,7 +92,11 @@ I'll try and do this like the goth README seems to want and then bail back to 1.
 
 Ok, seem to have goth working locally.
 
+Parsing still takes some work because I'm not great at elixir
+
 ### Serve processed data from GCS in android app
+Working after fixing some goth issues
+
 ### Reject requests that aren't from laura or me.
 ### Load android app on laura's phone see dumb data.
 ### Put "real" data in google cloud storage - see on phone.
