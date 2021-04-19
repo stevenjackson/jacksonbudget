@@ -1,6 +1,6 @@
 defmodule Budgets.TextFileLoader do
   def load_balances do
-    download_file
+    download_file()
     |> load_balances
   end
 
