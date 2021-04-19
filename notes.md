@@ -96,6 +96,7 @@ Ok, seem to have goth working locally.
 ### Reject requests that aren't from laura or me.
 ### Load android app on laura's phone see dumb data.
 ### Put "real" data in google cloud storage - see on phone.
+### Can no longer run docker locally because we can't access GCS (either need to map in local file or pass env credentials, I guess)
 === v1 ready ====
 
 

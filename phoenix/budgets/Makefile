@@ -20,6 +20,7 @@ build: ## Build the Docker image
 run: ## Run the app in Docker
 	docker run \
 	--env PORT=8080 \
+	--env SECRET_KEY_BASE="" \
 	-p 8080:8080 \
 	--rm -it $(APP_NAME):latest
 

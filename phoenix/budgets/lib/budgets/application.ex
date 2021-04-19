@@ -40,13 +40,17 @@ defmodule Budgets.Application do
       "~/.config/gcloud/application_default_credentials.json"
       |> Path.expand
 
-    {type, filename} = case {System.get_env(env_name), File.regular?(default_path)} do
-      {filename, _} when is_binary(filename) -> {:credentials, filename}
-      {_, true} -> {:refresh_token, default_path}
-      _ -> {:metadata}
-    end
+    options = []
 
-    {type, filename |> File.read!() |> Jason.decode!(), [] }
+    case {System.get_env(env_name), File.regular?(default_path)} do
+      {filename, _} when is_binary(filename) -> {:credentials, parse_json(filename), options}
+      {_, true} -> {:refresh_token, parse_json(default_path), options}
+      _ -> {:metadata, options}
+    end
+  end
+
+  defp parse_json(filename) do
+    filename |> File.read!() |> Jason.decode!()
   end
 
 end
