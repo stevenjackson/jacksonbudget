@@ -43,7 +43,7 @@ defmodule Budgets.Application do
     {type, filename} = case {System.get_env(env_name), File.regular?(default_path)} do
       {filename, _} when is_binary(filename) -> {:credentials, filename}
       {_, true} -> {:refresh_token, default_path}
-      _ -> {:error, "Credentials file not found"}
+      _ -> {:metadata}
     end
 
     {type, filename |> File.read!() |> Jason.decode!(), [] }
